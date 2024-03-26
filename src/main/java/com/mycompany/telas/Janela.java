@@ -1,9 +1,17 @@
 package com.mycompany.telas;
 
-public class Janela extends javax.swing.JFrame {
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
+public class Janela extends javax.swing.JFrame {
+    static TelaInicial telaInicial;
+    
     public Janela() {
-        initComponents();
+        this.setLayout(new BorderLayout());
+        telaInicial = new TelaInicial();
+        this.add(telaInicial, BorderLayout.CENTER);
+        this.pack();
     }
 
     @SuppressWarnings("unchecked")
