@@ -39,11 +39,13 @@ public class Pedido {
     
     public void adicionarProduto(Produto novoProduto){
         this.listaProdutos.add(novoProduto);
+        this.valorTotal += novoProduto.getValor();
     }
     
     public boolean removeProdutoByName(String name){
         for (Produto produto : listaProdutos) {
             if (produto.getNome().equals(name)){
+                this.valorTotal -= produto.getValor();
                 return listaProdutos.remove(produto);
             }
         }
@@ -54,6 +56,12 @@ public class Pedido {
     public boolean editProduto(Produto produtoEditado){
         try {
             Produto produto = getProdutoByName(produtoEditado.getNome());
+            double produtoValor = produto.getValor();
+            double valorEditado = produtoEditado.getValor();
+            if (produtoValor != valorEditado){
+                this.valorTotal -= produtoValor;
+                this.valorTotal += valorEditado;
+            }
             int produtoIndex = this.listaProdutos.indexOf(produto);
             this.listaProdutos.set(produtoIndex, produtoEditado);
             return true;
