@@ -52,24 +52,6 @@ public class Pedido {
         
         return false;
     }
-    
-    public boolean editProduto(Produto produtoEditado){
-        try {
-            Produto produto = getProdutoByName(produtoEditado.getNome());
-            double produtoValor = produto.getValor();
-            double valorEditado = produtoEditado.getValor();
-            if (produtoValor != valorEditado){
-                this.valorTotal -= produtoValor;
-                this.valorTotal += valorEditado;
-            }
-            int produtoIndex = this.listaProdutos.indexOf(produto);
-            this.listaProdutos.set(produtoIndex, produtoEditado);
-            return true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return false;
-    }
 
     public double getValorTotal() {
         return valorTotal;
