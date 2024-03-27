@@ -20,13 +20,47 @@ public class Pedido {
     public Pedido (){
         this.listaProdutos = new ArrayList<>();
     }
+
+    public List<Produto> getListaProdutos() {
+        return listaProdutos;
+    }
+    
+    public Produto getProdutoByName(String name){
+        Produto produtoRetornado = null;
+        
+        for (Produto produto : listaProdutos) {
+            if (produto.getNome().equals(name)){
+                return produto;
+            }
+        }
+        
+        return produtoRetornado;
+    }
     
     public void adicionarProduto(Produto novoProduto){
         this.listaProdutos.add(novoProduto);
     }
-
-    public List<Produto> getListaProdutos() {
-        return listaProdutos;
+    
+    public boolean removeProdutoByName(String name){
+        for (Produto produto : listaProdutos) {
+            if (produto.getNome().equals(name)){
+                return listaProdutos.remove(produto);
+            }
+        }
+        
+        return false;
+    }
+    
+    public boolean editProduto(Produto produtoEditado){
+        try {
+            Produto produto = getProdutoByName(produtoEditado.getNome());
+            int produtoIndex = this.listaProdutos.indexOf(produto);
+            this.listaProdutos.set(produtoIndex, produtoEditado);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
     public double getValorTotal() {
