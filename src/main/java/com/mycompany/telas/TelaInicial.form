@@ -104,7 +104,7 @@
                       </Group>
                       <Component id="jbAdicionar" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="46" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -185,18 +185,10 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="jbEditarItem" min="-2" max="-2" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Component id="jScrollPane1" min="-2" pref="143" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jbRemoverItem" min="-2" max="-2" attributes="0"/>
-                              <Component id="jsQuantidade2" alignment="1" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                  </Group>
-                  <EmptySpace pref="19" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jbRemoverItem" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -205,14 +197,8 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jbRemoverItem" min="-2" max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="105" max="-2" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Component id="jbRemoverItem" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jbEditarItem" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jsQuantidade2" min="-2" max="-2" attributes="0"/>
-                      </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -249,13 +235,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Remover Item"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="jbEditarItem">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Editar Item"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JSpinner" name="jsQuantidade2">
         </Component>
       </SubComponents>
     </Container>
