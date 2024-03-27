@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 
 public class Janela extends javax.swing.JFrame {
     static TelaInicial telaInicial;
+    static TelaPagamento telaPagamento;
     
     public Janela() {
         this.setLayout(new BorderLayout());
