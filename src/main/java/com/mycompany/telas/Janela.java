@@ -1,14 +1,14 @@
 package com.mycompany.telas;
 
 import java.awt.BorderLayout;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 public class Janela extends javax.swing.JFrame {
     static TelaInicial telaInicial;
-    static TelaPagamento telaPagamento;
+    static TelaPagamentoJPanel telaPagamento;
+    static TelaListaProdutosJPanel telaListaProdutos;
     
     public Janela() {
+        initComponents();
         this.setLayout(new BorderLayout());
         telaInicial = new TelaInicial();
         this.add(telaInicial, BorderLayout.CENTER);
