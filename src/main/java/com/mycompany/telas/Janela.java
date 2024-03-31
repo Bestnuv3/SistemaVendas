@@ -4,8 +4,8 @@ import java.awt.BorderLayout;
 
 public class Janela extends javax.swing.JFrame {
     static TelaInicial telaInicial;
-    static TelaPagamentoJPanel telaPagamento;
-    static TelaListaProdutosJPanel telaListaProdutos;
+    static TelaPagamento telaPagamento;
+    static TelaListaProdutos telaListaProdutos;
     
     public Janela() {
         initComponents();

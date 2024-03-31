@@ -8,12 +8,12 @@ package com.mycompany.telas;
  *
  * @author ots
  */
-public class TelaPagamentoJPanel extends javax.swing.JPanel {
+public class TelaPagamento extends javax.swing.JPanel {
 
     /**
      * Creates new form TelaPagamentoJPanel
      */
-    public TelaPagamentoJPanel() {
+    public TelaPagamento() {
         initComponents();
     }
 

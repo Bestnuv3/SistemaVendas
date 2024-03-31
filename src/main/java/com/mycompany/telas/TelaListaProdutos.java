@@ -13,12 +13,12 @@ import javax.swing.SwingUtilities;
  *
  * @author ots
  */
-public class TelaListaProdutosJPanel extends javax.swing.JPanel {
+public class TelaListaProdutos extends javax.swing.JPanel {
 
     /**
      * Creates new form TelaListaProdutosJPanel
      */
-    public TelaListaProdutosJPanel() {
+    public TelaListaProdutos() {
         initComponents();
     }
 
@@ -132,7 +132,7 @@ public class TelaListaProdutosJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbVoltarActionPerformed
-        Janela.telaPagamento = new TelaPagamentoJPanel();
+        Janela.telaPagamento = new TelaPagamento();
         JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
         janela.getContentPane().remove(Janela.telaInicial);
         janela.add(Janela.telaPagamento, BorderLayout.CENTER);
