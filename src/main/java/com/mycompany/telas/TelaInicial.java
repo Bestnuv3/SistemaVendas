@@ -23,9 +23,9 @@ import javax.swing.SwingUtilities;
  */
 public class TelaInicial extends javax.swing.JPanel {
 
-    private ListaProdutos listaProdutos;
-    private DefaultListModel<String> listCarrinhosModel;
-    private Carrinho carrinho;
+    private final ListaProdutos listaProdutos;
+    private final DefaultListModel<String> listCarrinhosModel;
+    private final Carrinho carrinho;
     private int selectedItemIndex = 0;
     /**
      * Creates new form TelaInicialJPanel
