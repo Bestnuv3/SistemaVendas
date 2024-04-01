@@ -238,6 +238,10 @@ public class TelaInicial extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPagarActionPerformed
+        if(carrinho.getProdutos().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Para prosseguir, adicione um produto no carrinho", "Carrinho vazio", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         Janela.telaPagamento = new TelaPagamento();
         JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
         janela.getContentPane().remove(Janela.telaInicial);
