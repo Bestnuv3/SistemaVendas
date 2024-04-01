@@ -28,7 +28,7 @@ public class ProdutoCarrinho extends Produto{
     }
     
     public double getValorTotal() {
-        return this.getValor() * this.quantidade;
+        return Math.round((this.getValor() * this.quantidade) * 100.0) / 100.0;
     }
     
     public String toString(){

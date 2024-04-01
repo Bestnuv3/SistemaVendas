@@ -27,7 +27,7 @@ public class TelaRecibo extends javax.swing.JPanel {
     public TelaRecibo(Pedido pedido) {
         this.pedido = pedido;
         initComponents();
-        this.jlTotal.setText(String.valueOf(pedido.getValorTotal()));
+        this.jlTotal.setText("R$ " + pedido.getValorTotal());
         preencherFormaDePagamento();
         preencherListaProdutos();
     }
@@ -52,6 +52,7 @@ public class TelaRecibo extends javax.swing.JPanel {
         jlQuantidadeParcelas = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Recibo");
 
         jbConcluir.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -66,7 +67,7 @@ public class TelaRecibo extends javax.swing.JPanel {
         jpListaProdutos.setLayout(jpListaProdutosLayout);
         jpListaProdutosLayout.setHorizontalGroup(
             jpListaProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 307, Short.MAX_VALUE)
+            .addGap(0, 244, Short.MAX_VALUE)
         );
         jpListaProdutosLayout.setVerticalGroup(
             jpListaProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -83,21 +84,12 @@ public class TelaRecibo extends javax.swing.JPanel {
 
         jlParcelas.setText("jLabel5");
 
-        jlQuantidadeParcelas.setText("Quantidade de Parcelas:");
+        jlQuantidadeParcelas.setText("Parcelas:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(112, 134, Short.MAX_VALUE)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(108, 117, Short.MAX_VALUE)
-                        .addComponent(jbConcluir)))
-                .addGap(0, 127, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,6 +108,11 @@ public class TelaRecibo extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jlFormaPagamento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(91, 91, 91)
+                .addComponent(jbConcluir)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,7 +175,8 @@ public class TelaRecibo extends javax.swing.JPanel {
         switch (pedido.getFormaDePagamento()) {
             case CARTAO_CREDITO -> {
                 jlQuantidadeParcelas.setVisible(true);
-                jlParcelas.setText(String.valueOf(pedido.getNumeroParcelas()));
+                
+                jlParcelas.setText(pedido.getNumeroParcelas()+"x R$ " + pedido.getValorParcela());
                 jlParcelas.setVisible(true);
                 jlFormaPagamento.setText("Cartão de Crédito");
             }
