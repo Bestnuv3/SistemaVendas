@@ -53,9 +53,13 @@ public class Pedido {
         
         return false;
     }
+    
+    public double getValorParcela(){
+        return Math.round((valorTotal / numeroParcelas) * 100.0) / 100.0;
+    }
 
     public double getValorTotal() {
-        return valorTotal;
+        return Math.round(valorTotal * 100.0) / 100.0;
     }
 
     public void setValorTotal(double valorTotal) {

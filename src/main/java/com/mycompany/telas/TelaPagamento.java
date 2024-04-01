@@ -22,12 +22,14 @@ import javax.swing.SwingUtilities;
 public class TelaPagamento extends javax.swing.JPanel {
 
     private final Carrinho carrinho;
+    public int parcelaSelecionada = 1;
     /**
      * Creates new form TelaPagamentoJPanel
      */
     public TelaPagamento() {
         carrinho = Carrinho.getInstance();
         initComponents();
+        this.jcFormaPagamento.setSelectedIndex(0);
         initListaCarrinho();
     }
 
@@ -47,8 +49,7 @@ public class TelaPagamento extends javax.swing.JPanel {
         jcFormaPagamento = new javax.swing.JComboBox<>();
         jpCredito = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jsParcelas = new javax.swing.JSpinner();
-        jlAviso = new javax.swing.JLabel();
+        jcbValorParcela = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jlistCarrinho = new javax.swing.JList<>();
@@ -71,9 +72,13 @@ public class TelaPagamento extends javax.swing.JPanel {
 
         jpCredito.setBorder(javax.swing.BorderFactory.createTitledBorder("Crédito"));
 
-        jLabel5.setText("Quantidade de Parcelas:");
+        jLabel5.setText("Parcelas");
 
-        jsParcelas.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        jcbValorParcela.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbValorParcelaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpCreditoLayout = new javax.swing.GroupLayout(jpCredito);
         jpCredito.setLayout(jpCreditoLayout);
@@ -81,12 +86,9 @@ public class TelaPagamento extends javax.swing.JPanel {
             jpCreditoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpCreditoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpCreditoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jlAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jpCreditoLayout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jsParcelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jcbValorParcela, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpCreditoLayout.setVerticalGroup(
@@ -95,10 +97,8 @@ public class TelaPagamento extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jpCreditoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jsParcelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jlAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jcbValorParcela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -121,30 +121,28 @@ public class TelaPagamento extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(8, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jpCredito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(14, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jlTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jcFormaPagamento, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 6, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(122, 122, 122)
-                        .addComponent(jbConcluir)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(0, 7, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(122, 122, 122)
+                .addComponent(jbConcluir)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jpCredito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,9 +161,9 @@ public class TelaPagamento extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jcFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jpCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(jbConcluir)
                 .addContainerGap())
         );
@@ -178,7 +176,7 @@ public class TelaPagamento extends javax.swing.JPanel {
         int formaDePagamento = comboBox.getSelectedIndex();
         if(formaDePagamento == 0){
             this.jpCredito.setVisible(true);
-            this.jsParcelas.setSize(30, this.jsParcelas.getSize().height);
+            this.setValorParcelas(this.getMaximoParcelas());
             return;
         }
         
@@ -191,7 +189,8 @@ public class TelaPagamento extends javax.swing.JPanel {
         int formaDePagamentoIndex = this.jcFormaPagamento.getSelectedIndex();
         if (formaDePagamentoIndex == 0){
             pedido.setFormaDePagamento(FormaDePagamento.CARTAO_CREDITO);
-            int qtdParcelas = (int) jsParcelas.getValue();
+            
+            int qtdParcelas = this.parcelaSelecionada;
             if (qtdParcelas <=0){
                 JOptionPane.showMessageDialog(null, "A quantidade deve ser maior que zero", "Quantidade inadequada", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -209,12 +208,37 @@ public class TelaPagamento extends javax.swing.JPanel {
         janela.pack();
     }//GEN-LAST:event_jbConcluirActionPerformed
 
-    private void completarCompraComCredito(){
+    private void jcbValorParcelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbValorParcelaActionPerformed
+        JComboBox cbxParcelas = (JComboBox) evt.getSource();
+        if (cbxParcelas.getItemCount() <= 0) return;
         
+        this.parcelaSelecionada = cbxParcelas.getSelectedIndex() + 1;     
+    }//GEN-LAST:event_jcbValorParcelaActionPerformed
+
+    private int getMaximoParcelas(){
+        double totalCarrinho = carrinho.getTotal();
+        int qtdParcelas = 1;
+        while(totalCarrinho > 20){
+            if(Math.round(totalCarrinho / qtdParcelas) <= 20) break;
+            
+            qtdParcelas++;
+        }
+        
+        return qtdParcelas;
     }
     
-    private void completarCompraComDebito(){
+    private void setValorParcelas(double qtdParcelas){
+        double totalCarrinho = carrinho.getTotal();
+        jcbValorParcela.removeAllItems();
         
+        double valorParcela;
+        for (int parcelaAtual = 1; parcelaAtual <= qtdParcelas; parcelaAtual++) {
+            // multiplica e divide por 100 para voltar o número com 2 decimais
+            valorParcela = Math.round((totalCarrinho / parcelaAtual) * 100.0)/100.0;
+            jcbValorParcela.addItem(parcelaAtual + "x R$ " + valorParcela);
+        }
+        
+        jcbValorParcela.setSelectedIndex(0);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -226,11 +250,10 @@ public class TelaPagamento extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbConcluir;
     private javax.swing.JComboBox<String> jcFormaPagamento;
-    private javax.swing.JLabel jlAviso;
+    private javax.swing.JComboBox<String> jcbValorParcela;
     private javax.swing.JLabel jlTotal;
     private javax.swing.JList<String> jlistCarrinho;
     private javax.swing.JPanel jpCredito;
-    private javax.swing.JSpinner jsParcelas;
     // End of variables declaration//GEN-END:variables
 
     private void initListaCarrinho() {
