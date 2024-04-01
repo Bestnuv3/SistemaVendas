@@ -4,8 +4,17 @@
  */
 package com.mycompany.telas;
 
+import com.mycompany.entities.ProdutoCarrinho;
+import com.mycompany.listaprodutos.Carrinho;
+import com.mycompany.listaprodutos.ListaProdutos;
+import com.mycompany.sistemavendas.Produto;
 import java.awt.BorderLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 /**
@@ -14,11 +23,22 @@ import javax.swing.SwingUtilities;
  */
 public class TelaInicial extends javax.swing.JPanel {
 
+    private ListaProdutos listaProdutos;
+    private DefaultListModel<String> listCarrinhosModel;
+    private Carrinho carrinho;
+    private int selectedItemIndex = 0;
     /**
      * Creates new form TelaInicialJPanel
      */
     public TelaInicial() {
+        this.listaProdutos = ListaProdutos.getInstance();
+        this.carrinho = Carrinho.getInstance();
+        this.listCarrinhosModel = new DefaultListModel<>();
         initComponents();
+        SpinnerNumberModel quantidadeModel = new SpinnerNumberModel(1, 1, 99999, 1);
+        jsQuantidade.setModel(quantidadeModel);
+        initListaProdutos();
+        initCarrinho();
     }
 
     /**
@@ -32,29 +52,38 @@ public class TelaInicial extends javax.swing.JPanel {
 
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList = new javax.swing.JList<>();
+        jlistCarrinhoProdutos = new javax.swing.JList<>();
         jbRemoverItem = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jlPrecoTotalCarrinho = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jbPagar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jComboBox = new javax.swing.JComboBox<>();
+        jcbListaProdutos = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jlPrecoProduto = new javax.swing.JLabel();
-        jsQuantidade1 = new javax.swing.JSpinner();
+        jsQuantidade = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
         jbAdicionar = new javax.swing.JButton();
         jbEditarProdutos = new javax.swing.JButton();
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Alterar Carrinho"));
 
-        jList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList);
+        jlistCarrinhoProdutos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(jlistCarrinhoProdutos);
 
         jbRemoverItem.setText("Remover Item");
+        jbRemoverItem.setEnabled(false);
+        jbRemoverItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbRemoverItemActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("R$");
+
+        jLabel6.setText("Total:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -62,9 +91,17 @@ public class TelaInicial extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jbRemoverItem, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jbRemoverItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlPrecoTotalCarrinho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(106, 106, 106)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -72,7 +109,14 @@ public class TelaInicial extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbRemoverItem)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(2, 2, 2)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jlPrecoTotalCarrinho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jbRemoverItem))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -91,13 +135,16 @@ public class TelaInicial extends javax.swing.JPanel {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Inserir Produtos no Carrinho"));
 
-        jComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbListaProdutos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbListaProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbListaProdutosActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("R$");
 
-        jlPrecoProduto.setText("jLabel3");
-
-        jLabel3.setText("Quatidade:");
+        jLabel3.setText("Quantidade:");
 
         jbAdicionar.setText("Adicionar");
         jbAdicionar.addActionListener(new java.awt.event.ActionListener() {
@@ -119,19 +166,18 @@ public class TelaInicial extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jsQuantidade1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(19, 19, 19))
-                    .addComponent(jComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                        .addComponent(jsQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcbListaProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jlPrecoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jlPrecoProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jbEditarProdutos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jbAdicionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -140,16 +186,16 @@ public class TelaInicial extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jcbListaProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jsQuantidade1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jsQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addContainerGap(21, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jlPrecoProduto))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jlPrecoProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jbAdicionar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -163,15 +209,14 @@ public class TelaInicial extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(120, 120, 120)
                 .addComponent(jbPagar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,13 +239,31 @@ public class TelaInicial extends javax.swing.JPanel {
         janela.getContentPane().remove(Janela.telaInicial);
         janela.add(Janela.telaPagamento, BorderLayout.CENTER);
         janela.pack();
-        
     }//GEN-LAST:event_jbPagarActionPerformed
 
     private void jbAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAdicionarActionPerformed
-        // TODO add your handling code here:
+        int quantidade = (int) this.jsQuantidade.getValue();
+        if (quantidade <= 0){
+            JOptionPane.showMessageDialog(null, "A quantidade deve ser maior que zero", "Quantidade inadequada", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        Produto produto = getComboBoxSelectedProduto();
+        adicionarProdutoNoCarrinho(produto, quantidade);
+        this.jlPrecoTotalCarrinho.setText(String.valueOf(carrinho.getTotal()));
     }//GEN-LAST:event_jbAdicionarActionPerformed
 
+    
+    private void adicionarProdutoNoCarrinho(Produto produto, int quantidade) {
+        ProdutoCarrinho novoProduto = this.carrinho.addProduto(produto, quantidade);
+        this.listCarrinhosModel.addElement(novoProduto.toString());
+        this.jlistCarrinhoProdutos.setModel(listCarrinhosModel);
+    }
+    
+    private Produto getComboBoxSelectedProduto(){
+        return listaProdutos.produtos.get(jcbListaProdutos.getSelectedIndex());
+    }
+    
     private void jbEditarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarProdutosActionPerformed
         Janela.telaListaProdutos = new TelaListaProdutos();
         JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -209,13 +272,50 @@ public class TelaInicial extends javax.swing.JPanel {
         janela.pack();
     }//GEN-LAST:event_jbEditarProdutosActionPerformed
 
+    private void jcbListaProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbListaProdutosActionPerformed
+        JComboBox comboBox = (JComboBox) evt.getSource();
+        if (comboBox.getItemCount() <= 0) return;
+        
+        Produto selectedProduto = getSelectedProduto(comboBox);
+        this.jlPrecoProduto.setText(String.valueOf(selectedProduto.getValor()));
+    }//GEN-LAST:event_jcbListaProdutosActionPerformed
+
+    private void jbRemoverItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRemoverItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbRemoverItemActionPerformed
+
+    private Produto getSelectedProduto (JComboBox comboBox) {
+        this.selectedItemIndex = comboBox.getSelectedIndex();
+        return this.listaProdutos.produtos.get(selectedItemIndex);
+    }
+    
+    private void initListaProdutos() {
+        this.jcbListaProdutos.removeAllItems();
+        for (Produto produto : listaProdutos.produtos) {
+            this.jcbListaProdutos.addItem(produto.getNome());
+        }
+        
+        this.selectedItemIndex = 0;
+        String precoProduto = String.valueOf(listaProdutos.produtos.get(0).getValor());
+        this.jlPrecoProduto.setText(precoProduto);
+    }
+    
+    private void initCarrinho() {
+        for (Produto produto : this.carrinho.getProdutos()) {
+            this.listCarrinhosModel.addElement(produto.getNome());
+        }
+        
+        this.jlistCarrinhoProdutos.setModel(listCarrinhosModel);
+        String totalCarrinho = String.valueOf(carrinho.getTotal());
+        this.jlPrecoTotalCarrinho.setText(totalCarrinho);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList<String> jList;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -223,7 +323,12 @@ public class TelaInicial extends javax.swing.JPanel {
     private javax.swing.JButton jbEditarProdutos;
     private javax.swing.JButton jbPagar;
     private javax.swing.JButton jbRemoverItem;
+    private javax.swing.JComboBox<String> jcbListaProdutos;
     private javax.swing.JLabel jlPrecoProduto;
-    private javax.swing.JSpinner jsQuantidade1;
+    private javax.swing.JLabel jlPrecoTotalCarrinho;
+    private javax.swing.JList<String> jlistCarrinhoProdutos;
+    private javax.swing.JSpinner jsQuantidade;
     // End of variables declaration//GEN-END:variables
+
+
 }
