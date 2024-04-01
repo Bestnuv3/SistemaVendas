@@ -4,9 +4,18 @@
  */
 package com.mycompany.telas;
 
+import com.mycompany.listaprodutos.ListaProdutos;
+import com.mycompany.sistemavendas.Produto;
 import java.awt.BorderLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 /**
@@ -15,11 +24,18 @@ import javax.swing.SwingUtilities;
  */
 public class TelaListaProdutos extends javax.swing.JPanel {
 
+    private DefaultListModel<String> listModel;
+    private ListaProdutos listaProdutos;
+    private int selectedItemIndice;
+    
     /**
      * Creates new form TelaListaProdutosJPanel
      */
     public TelaListaProdutos() {
+        listaProdutos = ListaProdutos.getInstance();
+        this.listModel = new DefaultListModel<>();
         initComponents();
+        initListaProdutos();
     }
 
     /**
@@ -59,6 +75,12 @@ public class TelaListaProdutos extends javax.swing.JPanel {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        jListProdutos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jListProdutos.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListProdutosValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(jListProdutos);
 
         jbAdicionarItem.setText("Adicionar Item");
@@ -73,6 +95,11 @@ public class TelaListaProdutos extends javax.swing.JPanel {
 
         jbRemoverItem.setText("Remover Item");
         jbRemoverItem.setEnabled(false);
+        jbRemoverItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbRemoverItemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -80,13 +107,13 @@ public class TelaListaProdutos extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jbAdicionarItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jbEditarItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jbRemoverItem, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17))
+                    .addComponent(jbRemoverItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jbAdicionarItem, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,17 +159,60 @@ public class TelaListaProdutos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbVoltarActionPerformed
-        Janela.telaPagamento = new TelaPagamento();
+        Janela.telaInicial = new TelaInicial();
         JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
-        janela.getContentPane().remove(Janela.telaInicial);
-        janela.add(Janela.telaPagamento, BorderLayout.CENTER);
+        janela.getContentPane().remove(Janela.telaListaProdutos);
+        janela.add(Janela.telaInicial, BorderLayout.CENTER);
         janela.pack();
     }//GEN-LAST:event_jbVoltarActionPerformed
 
     private void jbAdicionarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAdicionarItemActionPerformed
-        JOptionPane.showInputDialog("Nome do produto");
+        abrirDialogAdicicionarProduto();
     }//GEN-LAST:event_jbAdicionarItemActionPerformed
 
+    private void jListProdutosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListProdutosValueChanged
+        int[] selectedIndices = jListProdutos.getSelectionModel().getSelectedIndices();
+        if (selectedIndices.length <= 0){
+            this.jbEditarItem.setEnabled(false);
+            this.jbRemoverItem.setEnabled(false);
+            return;
+        }
+        this.selectedItemIndice = selectedIndices[0];
+        this.jbEditarItem.setEnabled(true);
+        this.jbRemoverItem.setEnabled(true);
+    }//GEN-LAST:event_jListProdutosValueChanged
+
+    private void jbRemoverItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRemoverItemActionPerformed
+        Produto produtoARemover = listaProdutos.produtos.get(selectedItemIndice);
+        JLabel removerProdutoLabel = new JLabel("Deseja remover o produto '"+produtoARemover.getNome()+"'");
+        int result = JOptionPane.showConfirmDialog(null,removerProdutoLabel, null, JOptionPane.OK_CANCEL_OPTION);
+        if(result == JOptionPane.OK_OPTION){
+            listaProdutos.produtos.remove(selectedItemIndice);
+            listModel.removeElementAt(selectedItemIndice);
+            jListProdutos.setModel(listModel);
+        }
+    }//GEN-LAST:event_jbRemoverItemActionPerformed
+
+    private void abrirDialogAdicicionarProduto(){
+        JTextField nomeField = new JTextField(15);
+        SpinnerNumberModel precoFieldModel = new SpinnerNumberModel(0.0, 0.0, 99999.9, 0.1);
+        JSpinner precoField = new JSpinner(precoFieldModel);
+        
+        JPanel dialogPanel = new JPanel();
+        dialogPanel.add(new JLabel("Nome do produto:"));
+        dialogPanel.add(nomeField);
+        dialogPanel.add(new JLabel("Preço:"));
+        dialogPanel.add(precoField);
+        
+        int result = JOptionPane.showConfirmDialog(null, dialogPanel, "Insira o nome e o preço do produto", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION){
+            String nomeProduto = nomeField.getText();
+            Double precoProduto = Double.valueOf(precoField.getValue().toString());
+            Produto novoProduto = new Produto(nomeProduto, precoProduto);
+            this.listModel.addElement(novoProduto.getNome());
+            this.listaProdutos.produtos.add(novoProduto);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -154,4 +224,12 @@ public class TelaListaProdutos extends javax.swing.JPanel {
     private javax.swing.JButton jbRemoverItem;
     private javax.swing.JButton jbVoltar;
     // End of variables declaration//GEN-END:variables
+
+    private void initListaProdutos() {
+        for (Produto produto : this.listaProdutos.produtos) {
+            this.listModel.addElement(produto.getNome());
+        }
+        
+        this.jListProdutos.setModel(listModel);
+    }
 }
