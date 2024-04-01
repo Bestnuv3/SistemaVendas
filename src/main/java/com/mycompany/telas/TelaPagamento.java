@@ -4,17 +4,32 @@
  */
 package com.mycompany.telas;
 
+import com.mycompany.entities.FormaDePagamento;
+import com.mycompany.entities.Pedido;
+import com.mycompany.listaprodutos.Carrinho;
+import com.mycompany.sistemavendas.Produto;
+import java.awt.BorderLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author ots
  */
 public class TelaPagamento extends javax.swing.JPanel {
 
+    private final Carrinho carrinho;
     /**
      * Creates new form TelaPagamentoJPanel
      */
     public TelaPagamento() {
+        carrinho = Carrinho.getInstance();
         initComponents();
+        this.jpCredito.setVisible(false);
+        initListaCarrinho();
     }
 
     /**
@@ -37,7 +52,7 @@ public class TelaPagamento extends javax.swing.JPanel {
         jlAviso = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jlistCarrinho = new javax.swing.JList<>();
         jbConcluir = new javax.swing.JButton();
 
         jLabel2.setText("Total:");
@@ -49,10 +64,17 @@ public class TelaPagamento extends javax.swing.JPanel {
         jLabel4.setText("Forma de Pagamento:");
 
         jcFormaPagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crédito", "Débito" }));
+        jcFormaPagamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcFormaPagamentoActionPerformed(evt);
+            }
+        });
 
         jpCredito.setBorder(javax.swing.BorderFactory.createTitledBorder("Crédito"));
 
         jLabel5.setText("Quantidade de Parcelas:");
+
+        jsParcelas.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         javax.swing.GroupLayout jpCreditoLayout = new javax.swing.GroupLayout(jpCredito);
         jpCredito.setLayout(jpCreditoLayout);
@@ -66,7 +88,7 @@ public class TelaPagamento extends javax.swing.JPanel {
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jsParcelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpCreditoLayout.setVerticalGroup(
             jpCreditoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -83,15 +105,16 @@ public class TelaPagamento extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Pagamento");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
+        jlistCarrinho.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(jlistCarrinho);
 
         jbConcluir.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jbConcluir.setText("Concluir");
+        jbConcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbConcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -116,9 +139,9 @@ public class TelaPagamento extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(80, 80, 80)))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(93, 93, 93)
+                .addGap(95, 95, 95)
                 .addComponent(jbConcluir)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -149,6 +172,50 @@ public class TelaPagamento extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jcFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcFormaPagamentoActionPerformed
+        JComboBox comboBox = (JComboBox) evt.getSource();
+        if (comboBox.getItemCount() <= 0) return;
+        
+        int formaDePagamento = comboBox.getSelectedIndex();
+        if(formaDePagamento == 0){
+            this.jpCredito.setVisible(true);
+            return;
+        }
+        
+        this.jpCredito.setVisible(false);
+    }//GEN-LAST:event_jcFormaPagamentoActionPerformed
+
+    private void jbConcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConcluirActionPerformed
+       
+        Pedido pedido = new Pedido(carrinho.getProdutos());
+        int formaDePagamentoIndex = this.jcFormaPagamento.getSelectedIndex();
+        if (formaDePagamentoIndex == 0){
+            pedido.setFormaDePagamento(FormaDePagamento.CARTAO_CREDITO);
+            int qtdParcelas = (int) jsParcelas.getValue();
+            if (qtdParcelas <=0){
+                JOptionPane.showMessageDialog(null, "A quantidade deve ser maior que zero", "Quantidade inadequada", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            pedido.setNumeroParcelas(qtdParcelas);
+        }
+        else pedido.setFormaDePagamento(FormaDePagamento.CARTAO_DEBITO);
+        
+        pedido.setValorTotal(carrinho.getTotal());
+        
+        Janela.telaRecibo = new TelaRecibo(pedido);
+        JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
+        janela.getContentPane().remove(Janela.telaPagamento);
+        janela.add(Janela.telaRecibo, BorderLayout.CENTER);
+        janela.pack();
+    }//GEN-LAST:event_jbConcluirActionPerformed
+
+    private void completarCompraComCredito(){
+        
+    }
+    
+    private void completarCompraComDebito(){
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -156,13 +223,24 @@ public class TelaPagamento extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbConcluir;
     private javax.swing.JComboBox<String> jcFormaPagamento;
     private javax.swing.JLabel jlAviso;
     private javax.swing.JLabel jlTotal;
+    private javax.swing.JList<String> jlistCarrinho;
     private javax.swing.JPanel jpCredito;
     private javax.swing.JSpinner jsParcelas;
     // End of variables declaration//GEN-END:variables
+
+    private void initListaCarrinho() {
+        DefaultListModel listCarrinhoModel = new DefaultListModel<>();
+        for (Produto produto : this.carrinho.getProdutos()) {
+            listCarrinhoModel.addElement(produto.toString());
+        }
+        
+        this.jlistCarrinho.setModel(listCarrinhoModel);
+        String totalCarrinho = String.valueOf(carrinho.getTotal());
+        this.jlTotal.setText(totalCarrinho);
+    }
 }

@@ -13,15 +13,16 @@ import java.util.List;
  * @author othavio
  */
 public class Pedido {
-    private final List<Produto> listaProdutos;
+    private final List<ProdutoCarrinho> listaProdutos;
     private double valorTotal = 0.0;
+    private int numeroParcelas = 1;
     private FormaDePagamento formaDePagamento;
     
-    public Pedido (){
-        this.listaProdutos = new ArrayList<>();
+    public Pedido (List<ProdutoCarrinho> listaProdutos){
+        this.listaProdutos = listaProdutos;
     }
 
-    public List<Produto> getListaProdutos() {
+    public List<ProdutoCarrinho> getListaProdutos() {
         return listaProdutos;
     }
     
@@ -37,7 +38,7 @@ public class Pedido {
         return produtoRetornado;
     }
     
-    public void adicionarProduto(Produto novoProduto){
+    public void adicionarProduto(ProdutoCarrinho novoProduto){
         this.listaProdutos.add(novoProduto);
         this.valorTotal += novoProduto.getValor();
     }
@@ -68,4 +69,14 @@ public class Pedido {
     public void setFormaDePagamento(FormaDePagamento formaDePagamento) {
         this.formaDePagamento = formaDePagamento;
     }
+
+    public int getNumeroParcelas() {
+        return numeroParcelas;
+    }
+
+    public void setNumeroParcelas(int numeroParcelas) {
+        this.numeroParcelas = numeroParcelas;
+    }
+    
+    
 }

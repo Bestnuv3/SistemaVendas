@@ -13,7 +13,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 /**
@@ -35,8 +34,6 @@ public class TelaInicial extends javax.swing.JPanel {
         this.carrinho = Carrinho.getInstance();
         this.listCarrinhosModel = new DefaultListModel<>();
         initComponents();
-        SpinnerNumberModel quantidadeModel = new SpinnerNumberModel(1, 1, 99999, 1);
-        jsQuantidade.setModel(quantidadeModel);
         initListaProdutos();
         initCarrinho();
     }
@@ -216,12 +213,12 @@ public class TelaInicial extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jbPagar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(131, 131, 131)
+                .addComponent(jbPagar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -324,7 +321,7 @@ public class TelaInicial extends javax.swing.JPanel {
     
     private void initCarrinho() {
         for (Produto produto : this.carrinho.getProdutos()) {
-            this.listCarrinhosModel.addElement(produto.getNome());
+            this.listCarrinhosModel.addElement(produto.toString());
         }
         
         this.jlistCarrinhoProdutos.setModel(listCarrinhosModel);

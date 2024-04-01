@@ -6,6 +6,7 @@ public class Janela extends javax.swing.JFrame {
     static TelaInicial telaInicial;
     static TelaPagamento telaPagamento;
     static TelaListaProdutos telaListaProdutos;
+    static TelaRecibo telaRecibo;
     
     public Janela() {
         initComponents();
