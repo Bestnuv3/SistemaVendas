@@ -44,7 +44,7 @@ public class Pedido {
     }
     
     public boolean removeProdutoByName(String name){
-        for (Produto produto : listaProdutos) {
+        for (ProdutoCarrinho produto : listaProdutos) {
             if (produto.getNome().equals(name)){
                 this.valorTotal -= produto.getValor();
                 return listaProdutos.remove(produto);

@@ -47,7 +47,7 @@ public final class Carrinho {
     public void setProdutos(List<ProdutoCarrinho> produtos) {
         this.produtos = produtos;
     }
-
+    
     public double getTotal() {
         return total;
     }
@@ -56,12 +56,15 @@ public final class Carrinho {
         this.total = total;
     }
     
-    
-    
     public static Carrinho getInstance() {
         if (instance == null) {
             instance = new Carrinho();
         }
         return instance;
+    }
+
+    public void clearProdutos() {
+        this.produtos.clear();
+        this.total = 0.0;
     }
 }

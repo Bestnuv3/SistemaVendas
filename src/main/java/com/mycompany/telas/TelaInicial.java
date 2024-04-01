@@ -146,6 +146,8 @@ public class TelaInicial extends javax.swing.JPanel {
 
         jLabel2.setText("R$");
 
+        jsQuantidade.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
         jLabel3.setText("Quantidade:");
 
         jbAdicionar.setText("Adicionar");
