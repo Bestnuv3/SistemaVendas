@@ -92,6 +92,11 @@ public class TelaListaProdutos extends javax.swing.JPanel {
 
         jbEditarItem.setText("Editar Item");
         jbEditarItem.setEnabled(false);
+        jbEditarItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEditarItemActionPerformed(evt);
+            }
+        });
 
         jbRemoverItem.setText("Remover Item");
         jbRemoverItem.setEnabled(false);
@@ -167,7 +172,10 @@ public class TelaListaProdutos extends javax.swing.JPanel {
     }//GEN-LAST:event_jbVoltarActionPerformed
 
     private void jbAdicionarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAdicionarItemActionPerformed
-        abrirDialogAdicicionarProduto();
+        Produto novoProduto = abrirDialogInserirProduto("", 0.0);
+        
+        this.listModel.addElement(novoProduto.getNome());
+        this.listaProdutos.produtos.add(novoProduto);
     }//GEN-LAST:event_jbAdicionarItemActionPerformed
 
     private void jListProdutosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListProdutosValueChanged
@@ -193,9 +201,19 @@ public class TelaListaProdutos extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jbRemoverItemActionPerformed
 
-    private void abrirDialogAdicicionarProduto(){
+    private void jbEditarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarItemActionPerformed
+        Produto produtoAEditar = listaProdutos.produtos.get(selectedItemIndice);
+        produtoAEditar = abrirDialogInserirProduto(produtoAEditar.getNome(), produtoAEditar.getValor());
+        listModel.remove(selectedItemIndice);
+        listaProdutos.produtos.remove(selectedItemIndice);
+        listModel.add(selectedItemIndice, produtoAEditar.getNome());
+        listaProdutos.produtos.add(selectedItemIndice, produtoAEditar);
+    }//GEN-LAST:event_jbEditarItemActionPerformed
+
+    private Produto abrirDialogInserirProduto(String nomeProdutoAEditar, double valorProdutoAEditar){
         JTextField nomeField = new JTextField(15);
-        SpinnerNumberModel precoFieldModel = new SpinnerNumberModel(0.0, 0.0, 99999.9, 0.1);
+        nomeField.setText(nomeProdutoAEditar);
+        SpinnerNumberModel precoFieldModel = new SpinnerNumberModel(valorProdutoAEditar, 0.0, 99999.9, 0.1);
         JSpinner precoField = new JSpinner(precoFieldModel);
         
         JPanel dialogPanel = new JPanel();
@@ -208,10 +226,9 @@ public class TelaListaProdutos extends javax.swing.JPanel {
         if (result == JOptionPane.OK_OPTION){
             String nomeProduto = nomeField.getText();
             Double precoProduto = Double.valueOf(precoField.getValue().toString());
-            Produto novoProduto = new Produto(nomeProduto, precoProduto);
-            this.listModel.addElement(novoProduto.getNome());
-            this.listaProdutos.produtos.add(novoProduto);
+            return new Produto(nomeProduto, precoProduto);
         }
+        return null;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
