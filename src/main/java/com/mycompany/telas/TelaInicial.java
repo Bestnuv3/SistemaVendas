@@ -13,7 +13,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
@@ -27,6 +26,7 @@ public class TelaInicial extends javax.swing.JPanel {
     private final DefaultListModel<String> listCarrinhosModel;
     private final Carrinho carrinho;
     private int selectedItemIndex = 0;
+    private int selectedCarrinhoItemIndex;
     /**
      * Creates new form TelaInicialJPanel
      */
@@ -71,6 +71,11 @@ public class TelaInicial extends javax.swing.JPanel {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Alterar Carrinho"));
 
         jlistCarrinhoProdutos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jlistCarrinhoProdutos.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jlistCarrinhoProdutosValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(jlistCarrinhoProdutos);
 
         jbRemoverItem.setText("Remover Item");
@@ -250,7 +255,7 @@ public class TelaInicial extends javax.swing.JPanel {
         
         Produto produto = getComboBoxSelectedProduto();
         adicionarProdutoNoCarrinho(produto, quantidade);
-        this.jlPrecoTotalCarrinho.setText(String.valueOf(carrinho.getTotal()));
+        this.updateCarrinhoPreco();
     }//GEN-LAST:event_jbAdicionarActionPerformed
 
     
@@ -281,8 +286,25 @@ public class TelaInicial extends javax.swing.JPanel {
     }//GEN-LAST:event_jcbListaProdutosActionPerformed
 
     private void jbRemoverItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRemoverItemActionPerformed
-        // TODO add your handling code here:
+        this.carrinho.removerProduto(selectedCarrinhoItemIndex);
+        this.listCarrinhosModel.remove(selectedCarrinhoItemIndex);
+        this.jlistCarrinhoProdutos.setModel(listCarrinhosModel);
+        this.updateCarrinhoPreco();
     }//GEN-LAST:event_jbRemoverItemActionPerformed
+
+    private void updateCarrinhoPreco(){
+        this.jlPrecoTotalCarrinho.setText(String.valueOf(carrinho.getTotal()));
+    }
+    
+    private void jlistCarrinhoProdutosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jlistCarrinhoProdutosValueChanged
+        int[] selectedIndices = jlistCarrinhoProdutos.getSelectionModel().getSelectedIndices();
+        if (selectedIndices.length <= 0){
+            this.jbRemoverItem.setEnabled(false);
+            return;
+        }
+        this.selectedCarrinhoItemIndex = selectedIndices[0];
+        this.jbRemoverItem.setEnabled(true);
+    }//GEN-LAST:event_jlistCarrinhoProdutosValueChanged
 
     private Produto getSelectedProduto (JComboBox comboBox) {
         this.selectedItemIndex = comboBox.getSelectedIndex();
