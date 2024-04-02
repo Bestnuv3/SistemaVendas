@@ -7,7 +7,7 @@ package com.mycompany.telas;
 import com.mycompany.entities.ProdutoCarrinho;
 import com.mycompany.listaprodutos.Carrinho;
 import com.mycompany.listaprodutos.ListaProdutos;
-import com.mycompany.sistemavendas.Produto;
+import com.mycompany.entities.Produto;
 import java.awt.BorderLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;

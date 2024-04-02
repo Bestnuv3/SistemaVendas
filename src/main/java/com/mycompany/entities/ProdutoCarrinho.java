@@ -4,14 +4,15 @@
  */
 package com.mycompany.entities;
 
-import com.mycompany.sistemavendas.Produto;
-
 /**
  *
  * @author ots
  */
 public class ProdutoCarrinho extends Produto{
     private int quantidade;
+
+    public ProdutoCarrinho() {
+    }
 
 
     public ProdutoCarrinho(int quantidade, Produto produto) {

@@ -1,4 +1,4 @@
-package com.mycompany.sistemavendas;
+package com.mycompany.entities;
 
 public class Produto {
     private String nome;

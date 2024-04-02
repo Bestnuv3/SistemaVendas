@@ -5,7 +5,7 @@
 package com.mycompany.listaprodutos;
 
 import com.mycompany.entities.ProdutoCarrinho;
-import com.mycompany.sistemavendas.Produto;
+import com.mycompany.entities.Produto;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,18 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
- */
-
 import com.mycompany.listaprodutos.Carrinho;
-import com.mycompany.sistemavendas.Produto;
+import com.mycompany.entities.Produto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- *
- * @author alunolages
- */
 public class CarrinhoTest {
     
     public Carrinho carrinho;
@@ -41,11 +32,8 @@ public class CarrinhoTest {
         double precoProduto = 2440.50;
         Produto produto = new Produto("Notebook",precoProduto);
         
-        Exception excecao = assertThrows(Exception.class,
-                            () -> 
-                            this.carrinho.addProduto(produto, -1));
-        assertEquals("A quantidade não deve ser menor que 1.",
-                        excecao.getMessage());
+        Exception excecao = assertThrows(Exception.class,() -> this.carrinho.addProduto(produto, -1));
+        assertEquals("A quantidade não deve ser menor que 1.", excecao.getMessage());
     }
     
     @Test

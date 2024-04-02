@@ -4,7 +4,6 @@
  */
 package com.mycompany.entities;
 
-import com.mycompany.sistemavendas.Produto;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +58,7 @@ public class Pedido {
     }
 
     public double getValorTotal() {
-        return Math.round(valorTotal * 100.0) / 100.0;
+        return valorTotal;
     }
 
     public void setValorTotal(double valorTotal) {
