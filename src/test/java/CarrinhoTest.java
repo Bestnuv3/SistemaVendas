@@ -37,7 +37,7 @@ public class CarrinhoTest {
     }
     
     @Test
-    public void erroAoAdicionarQuantidadeNegativa(){
+    public void erroAoAdicionarProdutoComQuantidadeNegativa(){
         double precoProduto = 2440.50;
         Produto produto = new Produto("Notebook",precoProduto);
         
