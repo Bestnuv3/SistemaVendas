@@ -23,7 +23,8 @@ public final class Carrinho {
         this.total = 0.0;
     }
     
-    public ProdutoCarrinho addProduto(Produto produto, int quantidade) {
+    public ProdutoCarrinho addProduto(Produto produto, int quantidade) throws Exception{
+        if (quantidade < 1) throw new Exception("A quantidade não deve ser menor que 1.");
         ProdutoCarrinho produtoCarrinho = new ProdutoCarrinho(quantidade, produto);
         this.produtos.add(produtoCarrinho);
         this.total += produtoCarrinho.getValorTotal();

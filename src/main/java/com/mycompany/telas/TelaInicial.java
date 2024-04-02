@@ -263,9 +263,13 @@ public class TelaInicial extends javax.swing.JPanel {
 
     
     private void adicionarProdutoNoCarrinho(Produto produto, int quantidade) {
-        ProdutoCarrinho novoProduto = this.carrinho.addProduto(produto, quantidade);
-        this.listCarrinhosModel.addElement(novoProduto.toString());
-        this.jlistCarrinhoProdutos.setModel(listCarrinhosModel);
+        try {
+            ProdutoCarrinho novoProduto = this.carrinho.addProduto(produto, quantidade);
+            this.listCarrinhosModel.addElement(novoProduto.toString());
+            this.jlistCarrinhoProdutos.setModel(listCarrinhosModel);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
     
     private Produto getComboBoxSelectedProduto(){
