@@ -18,7 +18,7 @@ public final class Carrinho {
     private List<ProdutoCarrinho> produtos;
     private double total;
     
-    private Carrinho(){
+    public Carrinho(){
         this.produtos = new ArrayList<>();
         this.total = 0.0;
     }
