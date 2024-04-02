@@ -19,6 +19,10 @@ public class Pedido {
     
     public Pedido (List<ProdutoCarrinho> listaProdutos){
         this.listaProdutos = listaProdutos;
+          for (ProdutoCarrinho produto : this.listaProdutos){
+               this.valorTotal += produto.getValorTotal();
+        }
+
     }
 
     public List<ProdutoCarrinho> getListaProdutos() {

@@ -50,8 +50,8 @@ public class PedidoTest {
     }
     
     @Test
-    public void valorTotalDeveSer105Com65(){
-        double totalEsperado = 155.65;
+    public void valorTotalDeveSer100E5(){
+        double totalEsperado = 100.5;
         
         assertEquals(totalEsperado, pedido.getValorTotal(), "O valor Total Esperado é diferente do Valor Total resultante");
     }
@@ -69,9 +69,12 @@ public class PedidoTest {
     }
     
     @Test
-    public void pegarProdutoPeloNomeDeveResultarProduto1(){
+    public void pegarProdutoPeloNomeDeveResultarpC1(){
         Produto produtoEsperado = pC1;
         
         assertEquals(produtoEsperado, pedido.getProdutoByName("Produto1"), "O Produto Esperado é diferente do Produto resultante");
     }
+    
+    //@Test
+    //public void  
 }
