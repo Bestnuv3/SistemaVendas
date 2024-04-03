@@ -69,12 +69,41 @@ public class PedidoTest {
     }
     
     @Test
-    public void pegarProdutoPeloNomeDeveResultarpC1(){
+    public void acharProdutoPeloNomeDeveResultarpC1(){
         Produto produtoEsperado = pC1;
         
         assertEquals(produtoEsperado, pedido.getProdutoByName("Produto1"), "O Produto Esperado é diferente do Produto resultante");
     }
     
-    //@Test
-    //public void  
+    @Test
+    public void removerMaisDeUmProdutoResultandoEmListaVazia(){
+        listaEsperada = new ArrayList<ProdutoCarrinho>();
+        
+        pedido.removeProdutoByName("Produto1");
+        pedido.removeProdutoByName("Produto2");
+        
+        assertEquals(listaEsperada, pedido.getListaProdutos(), "Produtos não foram removidos devidamente");
+    }
+    
+    @Test
+    public void tentartAcharProdutoNaoExistenteDeveRetornarNull(){       
+        assertEquals(null, pedido.getProdutoByName("ProdutoX"), "O Produto Esperado é diferente do Produto resultante");
+    }
+    
+    @Test
+    public void tentarRemoverProdutoNaoExistenteDeveRetornarFalso(){
+        assertEquals(false, pedido.removeProdutoByName("ProdutoX"), "Produtos não foram removidos devidamente");
+    }
+    
+    @Test
+    public void pegarValorDasParcelasQuandoTotal100EParcelas5(){
+        double parcelaEsperada = 20;
+        
+        pedido.removeProdutoByName("Produto1");
+        pedido.setNumeroParcelas(5);
+        
+        assertEquals(parcelaEsperada, pedido.getValorParcela(), "Parcela Retornada é diferente da Parcela Esperada");
+    }
+    
+    
 }
