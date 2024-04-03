@@ -31,8 +31,8 @@ public class ListaProdutosTest {
     
     @Test
     void funcaoGetInstance(){
-        ListaProdutos listaI = lista.getInstance();
+        ListaProdutos listaI = ListaProdutos.getInstance();
         
-        assertEquals(listaI, lista.getInstance(), "A lista não foi instanciada corretamente");
+        assertEquals(listaI, ListaProdutos.getInstance(), "A lista não foi instanciada corretamente");
     }
 }
