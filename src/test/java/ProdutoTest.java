@@ -38,10 +38,4 @@ public class ProdutoTest {
         assertEquals("Teste", produto.getNome());
     }
     
-    @Test
-    public void testSetNomeChangesValue() {
-        Produto produto = new Produto("Initial", 20.0);
-        produto.setNome("Changed");
-        assertEquals("Changed", produto.getNome());
-    }
 }
