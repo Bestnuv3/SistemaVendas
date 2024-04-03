@@ -20,6 +20,7 @@
                     <excludes> 
                         <exclude>com/mycompany/telas/*</exclude>
                         <exclude>com/mycompany/sistemavendas/*</exclude>
+                        <exclude>com/mycompany/entities/FormaDePagamento.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>
