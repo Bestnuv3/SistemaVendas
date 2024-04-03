@@ -12,6 +12,7 @@ public class ProdutoCarrinho extends Produto{
     private int quantidade;
 
     public ProdutoCarrinho() {
+        super("",0);
     }
 
 
@@ -32,6 +33,7 @@ public class ProdutoCarrinho extends Produto{
         return Math.round((this.getValor() * this.quantidade) * 100.0) / 100.0;
     }
     
+    @Override
     public String toString(){
         return this.getNome() + " " + this.getQuantidade() + "x";
     }
