@@ -15,12 +15,18 @@ public class CarrinhoTest {
     
     @BeforeEach
     public void setUp() {
-        carrinho = new Carrinho();
+        carrinho = Carrinho.getInstance();
         carrinho.clearProdutos();
     }
     
     @Test
-    public void adicaoDeUmProdutoNoCarrrinhoComQuantidadeUm() throws Exception{
+    public void testaSingletonDaInstanciaQuandoNova() {
+        Carrinho novoCarrinho = Carrinho.getInstance();
+        assertEquals(true, novoCarrinho != null);
+    }
+    
+    @Test
+    public void adicaoDeUmProdutoNoCarrinhoComQuantidadeUm() throws Exception{
         double precoProduto = 2440.50;
         Produto produto = new Produto("Notebook",precoProduto);
         this.carrinho.addProduto(produto, 1);
@@ -39,7 +45,16 @@ public class CarrinhoTest {
     }
     
     @Test
-    public void adicaoDeUmProdutoNoCarrrinhoComQuantidadeDois() throws Exception{
+    public void erroAoAdicionarProdutoComPrecoNegativo(){
+        double precoProduto = -3;
+        Produto produto = new Produto("Notebook",precoProduto);
+        
+        Exception excecao = assertThrows(Exception.class,() -> this.carrinho.addProduto(produto, 1));
+        assertEquals("O preço do produto não pode ser menor que 0.", excecao.getMessage());
+    }
+    
+    @Test
+    public void adicaoDeUmProdutoNoCarrinhoComQuantidadeDois() throws Exception{
         double precoProduto = 2440.50;
         int quantidadeProduto = 2;
         Produto produto = new Produto("Notebook",precoProduto);
@@ -49,7 +64,7 @@ public class CarrinhoTest {
     }
     
     @Test
-    public void adicaoDeVariosProdutosNoCarrrinhoComQuantidadeUm() throws Exception{
+    public void adicaoDeVariosProdutosNoCarrinhoComQuantidadeUm() throws Exception{
         double precoProduto1 = 2440.50;
         double precoProduto2 = 20000.00;
         double precoProduto3 = 10000.00;
@@ -65,7 +80,7 @@ public class CarrinhoTest {
     }
     
     @Test
-    public void adicaoDeVariosProdutosNoCarrrinhoComQuantidadeVariada() throws Exception{
+    public void adicaoDeVariosProdutosNoCarrinhoComQuantidadeVariada() throws Exception{
         double precoProduto1 = 2440.50;
         double precoProduto2 = 20000.00;
         double precoProduto3 = 10000.00;
@@ -85,7 +100,7 @@ public class CarrinhoTest {
     
     @Test
     public void removerProdutoPorProdutoCarrinho(){
-        ArrayList<Produto> carrinhoEsperado = new ArrayList<Produto>();
+        ArrayList<Produto> carrinhoEsperado = new ArrayList<>();
         
         Produto produto1 = new Produto("Notebook", 2000);
         
@@ -97,7 +112,7 @@ public class CarrinhoTest {
     
     @Test
     public void removerProdutoPorIndex() throws Exception{
-        ArrayList<Produto> carrinhoEsperado = new ArrayList<Produto>();
+        ArrayList<Produto> carrinhoEsperado = new ArrayList<>();
         
         Produto produto1 = new Produto("Notebook", 2000);
         

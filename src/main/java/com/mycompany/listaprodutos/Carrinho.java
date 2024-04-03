@@ -25,6 +25,7 @@ public final class Carrinho {
     
     public ProdutoCarrinho addProduto(Produto produto, int quantidade) throws Exception{
         if (quantidade < 1) throw new Exception("A quantidade não deve ser menor que 1.");
+        if (produto.getValor() < 0) throw new Exception("O preço do produto não pode ser menor que 0.");
         ProdutoCarrinho produtoCarrinho = new ProdutoCarrinho(quantidade, produto);
         this.produtos.add(produtoCarrinho);
         this.total += produtoCarrinho.getValorTotal();
