@@ -37,7 +37,7 @@ public final class Carrinho {
         this.total -= produto.getValorTotal();
     }
     
-    public void removerProdutoI(int index) {
+    public void removerProduto(int index) {
         ProdutoCarrinho produto = this.produtos.remove(index);
         this.total -= produto.getValorTotal();
     }

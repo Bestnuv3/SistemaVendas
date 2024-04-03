@@ -118,8 +118,15 @@ public class CarrinhoTest {
         
         var pC1 = new ProdutoCarrinho(1, produto1);
         carrinho.addProduto(pC1, 1);
-        carrinho.removerProdutoI(0);
+        carrinho.removerProduto(0);
         
         assertEquals(carrinhoEsperado, carrinho.getProdutos(), "Produtos não foram removidos corretamente");
+    }
+    
+    @Test
+    public void erroAoRemoverProdutoPorIndexQuandoVazio() throws IndexOutOfBoundsException {
+        
+        IndexOutOfBoundsException excecao = assertThrows(IndexOutOfBoundsException.class,() -> this.carrinho.removerProduto(0));
+        assertEquals(true, excecao.getMessage().contains("Index 0 out of bounds"));
     }
 }
