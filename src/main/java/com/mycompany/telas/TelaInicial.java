@@ -294,7 +294,7 @@ public class TelaInicial extends javax.swing.JPanel {
     }//GEN-LAST:event_jcbListaProdutosActionPerformed
 
     private void jbRemoverItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRemoverItemActionPerformed
-        this.carrinho.removerProduto(selectedCarrinhoItemIndex);
+        this.carrinho.removerProdutoI(selectedCarrinhoItemIndex);
         this.listCarrinhosModel.remove(selectedCarrinhoItemIndex);
         this.jlistCarrinhoProdutos.setModel(listCarrinhosModel);
         this.updateCarrinhoPreco();

@@ -1,5 +1,7 @@
 import com.mycompany.listaprodutos.Carrinho;
 import com.mycompany.entities.Produto;
+import com.mycompany.entities.ProdutoCarrinho;
+import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +15,7 @@ public class CarrinhoTest {
     
     @BeforeEach
     public void setUp() {
-        carrinho = Carrinho.getInstance();
+        carrinho = new Carrinho();
         carrinho.clearProdutos();
     }
     
@@ -79,5 +81,30 @@ public class CarrinhoTest {
         
         double expectedTotal = (precoProduto1 * quantidadeProduto1) + (precoProduto2 * quantidadeProduto2) + (precoProduto3 * quantidadeProduto3);
         assertEquals(expectedTotal, this.carrinho.getTotal(), "Total não foi modificado ao adicionar vários produtos na lista com uma quantidade maior que 1");
+    }
+    
+    @Test
+    public void removerProdutoPorProdutoCarrinho(){
+        ArrayList<Produto> carrinhoEsperado = new ArrayList<Produto>();
+        
+        Produto produto1 = new Produto("Notebook", 2000);
+        
+        var pC1 = new ProdutoCarrinho(1, produto1);
+        carrinho.removerProduto(pC1);
+        
+        assertEquals(carrinhoEsperado, carrinho.getProdutos(), "Produtos não foram removidos corretamente");
+    }
+    
+    @Test
+    public void removerProdutoPorIndex() throws Exception{
+        ArrayList<Produto> carrinhoEsperado = new ArrayList<Produto>();
+        
+        Produto produto1 = new Produto("Notebook", 2000);
+        
+        var pC1 = new ProdutoCarrinho(1, produto1);
+        carrinho.addProduto(pC1, 1);
+        carrinho.removerProdutoI(0);
+        
+        assertEquals(carrinhoEsperado, carrinho.getProdutos(), "Produtos não foram removidos corretamente");
     }
 }

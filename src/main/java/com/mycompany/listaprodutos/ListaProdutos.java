@@ -16,7 +16,7 @@ public final class ListaProdutos {
     private static ListaProdutos instance;
     public List<Produto> produtos;
     
-    private ListaProdutos(){
+    public ListaProdutos(){
         this.produtos = new ArrayList<>();
         this.produtos.add(new Produto("Notebook", 2400));
         this.produtos.add(new Produto("iPhone 12", 5000));
