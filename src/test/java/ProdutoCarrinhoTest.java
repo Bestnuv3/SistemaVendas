@@ -45,4 +45,15 @@ public class ProdutoCarrinhoTest {
         assertEquals(2, produtoCarrinho1.getQuantidade());
     }
 
+    @Test
+    public void testaConversaoToString(){
+        produtoCarrinho1.setQuantidade(2);
+        assertEquals("Produto1 2x", produtoCarrinho1.toString());
+    }
+    
+    @Test
+    public void testaConversaoToStringQuandoEntidadeVazia(){
+        ProdutoCarrinho novoProdutoCarrinho = new ProdutoCarrinho();
+        assertEquals(" 0x", novoProdutoCarrinho.toString());
+    }
 }
